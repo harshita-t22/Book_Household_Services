@@ -1,0 +1,52 @@
+*{
+    margin-top: 0px;
+}
+.my_container{
+    margin-left:325px;
+}
+
+.my_container2{
+    border: 2px solid black;
+
+}
+.login_panel {
+    border:2px solid black;;
+    width: 70%;
+    height: auto;
+    background-color: beige; /* Optional: Adds background to the panel */
+    padding: 20px; /* Optional: Adds some spacing inside the panel */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Adds a shadow */
+}
+.input_{
+    border:3px solid black;
+    width:600ox;
+    height:500px;
+    margin: auto;
+    margin-top:20px;
+    padding:1px;
+    border-radius: 10px;
+    font-size:16px;
+    text-align:justify;
+
+
+}
+
+.my_panel{
+    width:80%;
+    margin: auto;
+    height: auto;
+    border:1px black;
+}
+
+.center{
+    margin-top:50px;
+    text-align:center;
+    margin:auto;
+    color:coral;
+}
+
+.right{
+    text-align:right;
+    margin:auto;
+    color:coral;
+}

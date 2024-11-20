@@ -1,0 +1,61 @@
+/* Center the entire page content */
+body {
+    display: flex;
+    justify-content: center; /* Horizontally center */
+    align-items: center;    /* Vertically center */
+    min-height: 100vh;      /* Full height of the viewport */
+    margin: 0;              /* Remove any default margin */
+    background-color: #f8f9fa; /* Light gray background for better contrast */
+    font-family: Arial, sans-serif; /* Default font for a cleaner look */
+}
+
+/* Style the main container */
+.my_container {
+    width: 70%;             /* Main container width */
+    max-width: 600px;       /* Limit max width */
+    padding: 30px;          /* Add inner spacing */
+    background: #fff;       /* White background */
+    border: 1px solid #ddd; /* Light border */
+    border-radius: 15px;    /* Rounded corners */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Shadow for a modern look */
+    text-align: center;     /* Center the text inside the container */
+}
+
+/* Center-align headings and links */
+.center {
+    text-align: center;
+}
+
+/* Right-align specific elements like 'Register as Professional' */
+.right {
+    text-align: right;
+    margin-bottom: 15px; /* Add spacing below the "Register as Professional" link */
+}
+
+/* Add spacing between form elements */
+.mb-3 {
+    margin-bottom: 20px;
+}
+
+/* Style buttons */
+button {
+    padding: 10px 20px; /* Larger button size */
+    font-size: 16px;    /* Slightly larger font */
+}
+
+/* Add optional hover effect for links */
+.link-success:hover {
+    text-decoration: underline;
+}
+
+/* Style hyperlinks */
+a {
+    font-size: 14px;
+    text-decoration: none;
+    color: #007bff;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #0056b3;
+}
