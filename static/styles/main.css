@@ -4,18 +4,22 @@
 .my_container{
     margin-left:325px;
 }
-
+body {
+    background: linear-gradient(to right, hsl(331, 100%, 89%), hsl(201, 79%, 74%));
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
 .my_container2{
-    border: 2px solid black;
+    border: 5px solid black;
 
 }
 .login_panel {
     border:2px solid black;;
     width: 70%;
     height: auto;
-    background-color: beige; /* Optional: Adds background to the panel */
-    padding: 20px; /* Optional: Adds some spacing inside the panel */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Adds a shadow */
+    background-color: beige;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 .input_{
     border:3px solid black;
@@ -24,7 +28,6 @@
     margin: auto;
     margin-top:20px;
     padding:1px;
-    border-radius: 10px;
     font-size:16px;
     text-align:justify;
 
@@ -35,16 +38,25 @@
     width:80%;
     margin: auto;
     height: auto;
-    border:1px black;
+    border:100px black;
 }
 
 .center{
-    margin-top:50px;
+    margin-top:15px;
     text-align:center;
-    margin:auto;
-    color:coral;
+    color: black;
 }
 
+.heading {
+    text-align: center; /* Center the heading */
+    font-family: 'Poppins', sans-serif; /* Clean, modern font */
+    font-size: 3rem; /* Larger font size */
+    font-weight: 700; /* Extra bold */
+    color: #FF5722; /* Vibrant coral-orange */
+    margin: 30px 0; /* Add extra spacing */
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.25); /* Deeper shadow for contrast */
+    letter-spacing: 2px; /* Space out letters slightly */
+}
 .right{
     text-align:right;
     margin:auto;
