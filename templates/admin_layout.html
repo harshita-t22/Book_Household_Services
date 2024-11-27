@@ -11,14 +11,14 @@
             <div class="my_panel">
                 <nav class="nav nav-pills flex-column flex-sm-row">
                     <a class="flex-sm-fill text-sm-center nav-link active" aria-current="page" href="#">Home</a>
-                    <a class="flex-sm-fill text-sm-center nav-link" href="#">Search</a>
-                    <a class="flex-sm-fill text-sm-center nav-link" href="#">Summary</a>
-                    <a class="flex-sm-fill text-sm-center nav-link" href="#">Profile</a>
+                    <a class="flex-sm-fill text-sm-center nav-link" href="/search/{{name}}">Search</a>
+                    <a class="flex-sm-fill text-sm-center nav-link" href="/admin_summary/{{name}}">Summary</a>
+                    <a class="flex-sm-fill text-sm-center nav-link" href="/edit_admin_profile/{{name}}">Profile</a>
                     <span class="navbar-text">
                         Welcome {{name}}
                     </span>
                   </nav>
-        <div style="text-align:right;"><a href="#" class="link-danger">Logout</a></div>
+        <div style="text-align:right;"><a href="/login" class="link-danger">Logout</a></div>
         {%block content%}
 
         {%endblock%}

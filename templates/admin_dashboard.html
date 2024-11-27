@@ -14,12 +14,12 @@
         <tbody>
             {% for s in service %}
             <tr>
-                <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ s.id }}</td>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;"><a href="/edit_service/{{s.id}}/{{name}}">{{ s.id }}</a></td>
                 <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ s.name }}</td>
                 <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ s.price }}</td>
                 <td style="border: 1px solid #333; padding: 8px; text-align: center;">
                     <a href="/servicesub/{{s.id}}/{{name}}" type="button" class="btn btn-warning">Add Sub-Services</a>
-                    <a href="#" class="btn btn-danger">Delete</a>
+                    <a href="/delete_service/{{s.id}}/{{name}}" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
             {% endfor %}
@@ -31,4 +31,85 @@
     <div class="center">
         <a href="/servicess/{{ name }}" type="submit" class="btn btn-primary">+Add Service</a>
     </div>
+    <h2 style="text-align: center; margin-bottom: 20px;">Professionals</h2>
+    {% if prof %}
+    <table style="width: 100%; border-collapse: collapse; border: 2px solid #333;">
+        <thead>
+            <tr>
+                <th style="border: 1px solid #333; padding: 8px; text-align: center;">ID</th>
+                <th style="border: 1px solid #333; padding: 8px; text-align: center;">Professional Name</th>
+                <th style="border: 1px solid #333; padding: 8px; text-align: center;">Service Name</th>
+                <th style="border: 1px solid #333; padding: 8px; text-align: center;">Phone No</th>
+                <th style="border: 1px solid #333; padding: 8px; text-align: center;">Experience</th>
+                <th style="border: 1px solid #333; padding: 8px; text-align: center;">Status</th>
+                <th style="border: 1px solid #333; padding: 8px; text-align: center;">Rating</th>
+                <th style="border: 1px solid #333; padding: 8px; text-align: center;">Resume</th>
+                <th style="border: 1px solid #333; padding: 8px; text-align: center;">Action</th>
+                
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in prof %}
+            <tr>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;"><a href="/edit_proffess/{{p.id}}/{{name}}">{{ p.id }}</a></td>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ p.full_name }}</td>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ p.service_name }}</td>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ p.phone_no }}</td>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ p.experience}}</td>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ p.status}}</td>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ p.rating}}</td>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;">
+                    {% if p.resume_path %}
+                        <a href="{{ url_for('uploaded_resume', filename=p.resume_path.split('/')[-1]) }}" target="_blank">View Resume</a>
+                    {% else %}
+                        No Resume
+                    {% endif %}
+                </td>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;">
+                    {% if p.approv_status == "pending" %}
+                        <a href="/approve_prof/{{p.id}}/{{name}}" type="button" class="btn btn-warning">Pending</a>
+                    {% else %}
+                        <button type="button" class="btn btn-success" disabled>Approved</button>
+                    {% endif %}
+                    <a href="/delete_prof/{{p.id}}/{{name}}" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <h3>No professionals available!!</h3>
+    {% endif %}
+
+    <h2 style="text-align: center; margin-bottom: 20px;">Service Request</h2>
+    {% if ser_req %}
+    <table style="width: 100%; border-collapse: collapse; border: 2px solid #333;">
+        <thead>
+            <tr>
+                <th style="border: 1px solid #333; padding: 8px; text-align: center;">ID</th>
+                <th style="border: 1px solid #333; padding: 8px; text-align: center;">Professional ID</th>
+                <th style="border: 1px solid #333; padding: 8px; text-align: center;">Pincode</th>
+                <th style="border: 1px solid #333; padding: 8px; text-align: center;">Contact No</th>
+                <th style="border: 1px solid #333; padding: 8px; text-align: center;">Request Date</th>
+                <th style="border: 1px solid #333; padding: 8px; text-align: center;">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in ser_req %}
+            <tr>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ r.id }}</td>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ r.proff_id }}</td>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ r.service_prof.pincode }}</td>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ r.service_prof.phone_no }}</td>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ r.request_date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ r.status }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <h3>No service_request generated!!</h3>
+    {% endif %}
+
 {% endblock %}

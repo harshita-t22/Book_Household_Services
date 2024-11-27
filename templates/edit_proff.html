@@ -1,0 +1,32 @@
+{%extends "admin_layout.html"%}
+{%block content%}
+            {%if service_prof%}
+                <div class="my_container">
+                    <form action="/edit_proffess/{{service_prof.id}}/{{name}}" method="POST">
+                    <div class="login_panel">
+                        <div class="center"><h1>Edit Professional Details</h1>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-default">Name</span>
+                            <input type="text" class="form-control" name="name" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="{{service_prof.full_name}}">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-default">Email</span>
+                            <input type="text" class="form-control" name="email" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="{{service_prof.email}}">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-default">Phone No</span>
+                            <input type="text" class="form-control" name="phone" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="{{service_prof.phone_no}}">
+                        </div> 
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-default">Experience(years)</span>
+                            <input type="number" class="form-control" name="exp" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="{{service_prof.experience}}">
+                        </div>              
+
+                        <div class="center">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                            <a href="/admin/{{name}}" button type="submit" class="btn btn-primary">Cancel</button></a>
+                        </div>
+                    </div>
+                </form>
+            {%endif%}
+{%endblock%}

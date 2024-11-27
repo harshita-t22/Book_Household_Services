@@ -2,7 +2,7 @@
 from flask import Flask
 from backend.models import db
 from flask_sqlalchemy import SQLAlchemy
-
+from backend.api_controllers import *
 app=None
 
 def setup_app():
@@ -14,6 +14,7 @@ def setup_app():
     print("App context pushed")
     db.init_app(app) #Flask app connected to db(SQL Alchemy)
     print("SQLAlchemy initiaized")
+    api.init_app(app)
     app.debug=True
     print("Household Service app is started....")
 

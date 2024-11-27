@@ -1,12 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Welcome Professional!!!</h1>
-    
-</body>
-</html>
+{% extends "admin_layout.html" %}
+
+{% block content %}
+
+<h2 style="text-align: center; margin-bottom: 20px;">Service Request</h2>
+
+{% if ser_req %}
+    <table style="width: 100%; border-collapse: collapse; border: 2px solid #333;">
+        <thead>
+            <tr>
+                <th style="border: 1px solid #333; padding: 8px; text-align: center;">ID</th>
+                <th style="border: 1px solid #333; padding: 8px; text-align: center;">Professional ID</th>
+                <th style="border: 1px solid #333; padding: 8px; text-align: center;">Request Date</th>
+                <th style="border: 1px solid #333; padding: 8px; text-align: center;">Customer Name</th>
+                <th style="border: 1px solid #333; padding: 8px; text-align: center;">Customer Phone</th>
+                <th style="border: 1px solid #333; padding: 8px; text-align: center;">Customer Pincode</th>
+                <th style="border: 1px solid #333; padding: 8px; text-align: center;">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in ser_req %}
+            <tr>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ r.id }}</td>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ r.proff_id }}</td>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ r.request_date }}</td>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ r.customer.full_name }}</td>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ r.customer.phone_no }}</td>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ r.customer.pincode }}</td>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;">
+                    {% if r.status == "requested" %}
+                        <a href="{{ url_for('accept_request', name=name, id=id, request_id=r.id) }}" class="btn btn-success">Accept</a>
+                        <a href="{{ url_for('reject_request', name=name, id=id, request_id=r.id) }}" class="btn btn-danger">Reject</a>
+                    {% else %}
+                        <span>{{ r.status }}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <h3>No service request generated!!</h3>
+{% endif %}
+
+{% endblock %}

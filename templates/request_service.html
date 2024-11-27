@@ -1,0 +1,37 @@
+{% extends "user_layout.html" %}
+{% block content %}
+<h2 style="text-align: center; margin-bottom: 20px;">Professionals</h2>
+    {% if servicesubtype %}
+    <table style="width: 100%; border-collapse: collapse; border: 2px solid #333;">
+        <thead>
+            <tr>
+                <th style="border: 1px solid #333; padding: 8px; text-align: center;">ID</th>
+                <th style="border: 1px solid #333; padding: 8px; text-align: center;">Professional Name</th>
+                <th style="border: 1px solid #333; padding: 8px; text-align: center;">Phone Number</th>
+                <th style="border: 1px solid #333; padding: 8px; text-align: center;">Experience (years)</th>
+                <th style="border: 1px solid #333; padding: 8px; text-align: center;">Pincode</th>
+                <th style="border: 1px solid #333; padding: 8px; text-align: center;">Rating</th>
+                <th style="border: 1px solid #333; padding: 8px; text-align: center;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in servicesubtype %}
+            <tr>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ s.id }}</td>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ s.full_name }}</td>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ s.phone_no }}</td>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ s.experience }}</td>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ s.pincode }}</td>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ s.rating }}</td>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;">
+                    <a href="/customer/book/{{ name }}/{{ s.id }}" type="button" class="btn btn-warning">Book</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <h3>No professionals available!!</h3>
+    {% endif %}
+
+{% endblock %}

@@ -16,6 +16,9 @@ class ServiceProf(db.Model):
     address=db.Column(db.String,nullable=False)
     pincode=db.Column(db.Integer,nullable=False)
     resume_path = db.Column(db.String, nullable=True)
+    status=db.Column(db.String,default="available")
+    approv_status=db.Column(db.String,default="pending")
+    rating=db.Column(db.Integer,default=0)
     service_requests=db.relationship("ServiceRequest",cascade="all,delete",backref="service_prof",lazy=True)
 
 #2 entity
@@ -52,9 +55,10 @@ class ServiceRequest(db.Model):
     customer_id = db.Column(db.Integer, db.ForeignKey("user_info.id"), nullable=False)
     proff_id = db.Column(db.Integer, db.ForeignKey("service_prof.id"), nullable=False)
     request_date=db.Column(db.DateTime,nullable=False)
-    status=db.Column(db.String,default="available")
-    rating=db.Column(db.Integer,nullable=False)
-    feedback=db.Column(db.String,nullable=False)
+    done_date=db.Column(db.DateTime,nullable=True)
+    status=db.Column(db.String,default="requested")
+    rating=db.Column(db.Integer,default=0)
+    feedback=db.Column(db.String,nullable=True)
 
 #5 entity
 
