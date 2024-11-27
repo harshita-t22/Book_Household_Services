@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="/static/styles/main.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <title>Edit Profile</title>
+    </head>
+    <body>
+        <div class="my_container2">
+            <div class="heading" ><h1>A Z HOUSEHOLD SERVICES</h1></div>
+            <div class="my_panel">
+                <nav class="nav nav-pills flex-column flex-sm-row">
+                    <a class="flex-sm-fill text-sm-center nav-link" aria-current="page" href="/professional/{{name}}/{{id}}">Home</a>
+                    <a class="flex-sm-fill text-sm-center nav-link" href="/professional/search/{{name}}/{{id}}">Search</a>
+                    <a class="flex-sm-fill text-sm-center nav-link" href="/professional/summary/{{name}}/{{id}}">Summary</a>
+                    <a class="flex-sm-fill text-sm-center nav-link active" href="#">Profile</a>
+                    <span class="navbar-text">
+                        Welcome {{name}}
+                    </span>
+                  </nav>
+        <div style="text-align:right;"><a href="/login" class="link-danger">Logout</a></div>
+            {%if service%}
+                <div class="my_container">
+                    <form action="/edit_prof_profile/{{name}}/{{id}}" method="POST">
+                    <div class="login_panel">
+                        <div class="center"><h1>Edit Your Profile</h1>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-default">Email</span>
+                            <input type="text" class="form-control" name="email" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="{{service.email}}" readonly>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-default">Full Name</span>
+                            <input type="text" class="form-control" name="aname" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="{{service.full_name}}">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-default">Phone No</span>
+                            <input type="number" class="form-control" name="phoneno" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="{{service.phone_no}}">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-default">Address</span>
+                            <input type="text" class="form-control" name="address" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="{{service.address}}">
+                        </div> 
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-default">Pincode</span>
+                            <input type="number" class="form-control" name="pincode" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="{{service.pincode}}">
+                        </div>               
+
+                        <div class="center">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                            <a href="/professional/{{name}}/{{id}}" button type="submit" class="btn btn-primary">Cancel</button></a>
+                        </div>
+                    </div>
+                </form>
+            {%endif%}
+
+    </body>
+</html>

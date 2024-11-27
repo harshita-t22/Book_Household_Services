@@ -160,7 +160,7 @@ def reject_request(name, id, request_id):
 def book_proff(name,id,sname):
     prof=get_proff(sname)
     user = UserInfo.query.filter_by(id=id).first()
-    return render_template("request_service.html",name=name,sname=sname,servicesubtype=prof)
+    return render_template("request_service.html",name=name,sname=sname,servicesubtype=prof,id=id)
 
 @app.route("/customer/book/<name>/<pid>")
 def gen_req(name,pid):
@@ -224,16 +224,30 @@ def search(name):
             results = ServiceProf.query.filter((ServiceProf.full_name.ilike(f"%{search_term}%"))|(ServiceProf.pincode.ilike(f"%{search_term}%"))|(ServiceProf.rating.ilike(f"%{search_term}%"))).all()
         elif search_type == "service_request":
             results = ServiceRequest.query.filter((ServiceRequest.status.ilike(f"%{search_term}%"))|(ServiceRequest.rating.ilike(f"%{search_term}%"))).all()
-        
-        
+    return render_template("admin_search.html",name=name,results=results,search_type=search_type,search_term=search_term)
 
-    return render_template(
-        "admin_search.html",
-        name=name,
-        results=results,
-        search_type=search_type,
-        search_term=search_term
-    )
+@app.route("/customer/search/<name>/<id>", methods=["GET", "POST"])
+def search_cus(name,id):
+    search_type = request.form.get('search_type')
+    search_term = request.form.get('search_term')
+    results = []
+    if request.method == "POST":
+        if search_type == "service":
+            results = Service.query.filter(Service.name.ilike(f"%{search_term}%")).all()
+        elif search_type == "professional":
+            results = ServiceProf.query.filter((ServiceProf.full_name.ilike(f"%{search_term}%"))|(ServiceProf.pincode.ilike(f"%{search_term}%"))|(ServiceProf.rating.ilike(f"%{search_term}%"))).all()
+    return render_template( "customer_search.html",name=name,results=results,search_type=search_type,search_term=search_term,id=id)
+
+
+@app.route("/professional/search/<name>/<id>", methods=["GET", "POST"])
+def search_prof(name, id):
+    search_term = request.form.get('search_term')  # Fetch search term
+    results = []
+    if request.method == "POST":
+        results = ServiceRequest.query.filter(ServiceRequest.status.ilike(f"%{search_term}%"),ServiceRequest.proff_id == id).all()
+    return render_template("prof_search.html",name=name, id=id,results=results,search_term=search_term)
+
+
 
 @app.route("/edit_service/<id>/<name>",methods=["GET","POST"])
 def edit_service(id,name):
@@ -265,6 +279,42 @@ def edit_admin_profile(name):
         db.session.commit()
         return redirect(url_for("admin_dashboard",name=name))
     return render_template("edit_admin_profile.html",service=s,name=name)
+
+
+@app.route("/edit_customer_profile/<name>/<id>",methods=["GET","POST"])
+def edit_customer_profile(name,id):
+    s=UserInfo.query.filter_by(email=name).first()
+    if request.method=="POST":
+        aname=request.form.get("aname")
+        phoneno=request.form.get("phoneno")
+        address=request.form.get("address")
+        pincode=request.form.get("pincode")
+        s.full_name=aname
+        s.phone_no=phoneno
+        s.address=address
+        s.pincode=pincode
+        db.session.commit()
+        return redirect(url_for("customer_dashboard",name=name,id=id))
+    return render_template("edit_customer_profile.html",service=s,name=name,id=id)
+
+
+@app.route("/edit_prof_profile/<name>/<id>",methods=["GET","POST"])
+def edit_prof_profile(name,id):
+    s=ServiceProf.query.filter_by(email=name).first()
+    if request.method=="POST":
+        aname=request.form.get("aname")
+        phoneno=request.form.get("phoneno")
+        address=request.form.get("address")
+        pincode=request.form.get("pincode")
+        s.full_name=aname
+        s.phone_no=phoneno
+        s.address=address
+        s.pincode=pincode
+        db.session.commit()
+        return redirect(url_for("prof_dashboard",name=name,id=id))
+    return render_template("edit_prof_profile.html",service=s,name=name,id=id)
+
+           
 
 @app.route("/edit_proffess/<id>/<name>",methods=["GET","POST"])
 def edit_p(id,name):
@@ -343,6 +393,29 @@ def put_admin_summary(name):
     plot.clf()
     return render_template("admin_summary.html",name=name)
 
+
+@app.route("/customer/summary/<name>/<id>")
+def put_customer_summary(name,id):
+    dir_path=f"./static/images/{name}"
+    if not os.path.exists(dir_path):
+        os.makedirs(dir_path)
+    plot=get_service_request_summary_c(id)
+    plot_file_path=os.path.join(dir_path,"c_summary.jpeg")
+    plot.savefig(plot_file_path)
+    plot.clf()
+    return render_template("customer_summary.html",name=name,id=id)
+
+@app.route("/professional/summary/<name>/<id>")
+def put_professional_summary(name,id):
+    dir_path=f"./static/images/{name}"
+    if not os.path.exists(dir_path):
+        os.makedirs(dir_path)
+    plot=get_service_request_summary_p(id)
+    plot_file_path=os.path.join(dir_path,"c_summary.jpeg")
+    plot.savefig(plot_file_path)
+    plot.clf()
+    return render_template("prof_summary.html",name=name,id=id)
+
 #other functions
 def get_services():
     services=Service.query.all()
@@ -387,14 +460,58 @@ def get_proff(name):
 
 def get_service_request_summary():
     s=get_service_requests()
-    summary={"rejected":0,"requested":0,"accepted":0}
+    summary={"rejected":0,"requested":0,"accepted":0,"completed":0}
     for i in s:
         if i.status=='rejected':
             summary["rejected"]+=1
         elif i.status=='requested':
             summary["requested"]+=1
         elif i.status=='accepted':
-            summary["accepted"]+=1    
+            summary["accepted"]+=1
+        elif i.status=='completed':
+            summary["completed"]+=1        
+    x_names=list(summary.keys())
+    y_names=list(summary.values())
+    fig,ax=plt.subplots()
+    ax.bar(x_names, y_names, color="blue", width=0.4)
+    ax.set_title("Service Request Stats")
+    ax.set_xlabel("Status")
+    ax.set_ylabel("No. of Requests")
+    return fig
+
+def get_service_request_summary_c(id):
+    s = ServiceRequest.query.filter_by(customer_id=id).all()
+    summary={"rejected":0,"requested":0,"accepted":0,"completed":0}
+    for i in s:
+        if i.status=='rejected':
+            summary["rejected"]+=1
+        elif i.status=='requested':
+            summary["requested"]+=1
+        elif i.status=='accepted':
+            summary["accepted"]+=1   
+        elif i.status=='completed':
+            summary["completed"]+=1    
+    x_names=list(summary.keys())
+    y_names=list(summary.values())
+    fig,ax=plt.subplots()
+    ax.bar(x_names, y_names, color="blue", width=0.4)
+    ax.set_title("Service Request Stats")
+    ax.set_xlabel("Status")
+    ax.set_ylabel("No. of Requests")
+    return fig
+
+def get_service_request_summary_p(id):
+    s = ServiceRequest.query.filter_by(proff_id=id).all()
+    summary={"rejected":0,"requested":0,"accepted":0,"completed":0}
+    for i in s:
+        if i.status=='rejected':
+            summary["rejected"]+=1
+        elif i.status=='requested':
+            summary["requested"]+=1
+        elif i.status=='accepted':
+            summary["accepted"]+=1 
+        elif i.status=='completed':
+            summary["completed"]+=1      
     x_names=list(summary.keys())
     y_names=list(summary.values())
     fig,ax=plt.subplots()

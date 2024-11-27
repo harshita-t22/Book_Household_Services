@@ -15,6 +15,7 @@ def setup_app():
     db.init_app(app) #Flask app connected to db(SQL Alchemy)
     print("SQLAlchemy initiaized")
     api.init_app(app)
+    print("Connected API")
     app.debug=True
     print("Household Service app is started....")
 

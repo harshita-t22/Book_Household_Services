@@ -1,13 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/styles/main.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>Home Page</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        footer {
+            margin-top: auto;
+        }
+    </style>
 </head>
-<body>
-    <h1>Welcome to A Z Household Services</h1>
-    <div class="center"><a href="/login" type="button" class="btn btn-primary">Login</a></div>
+<body class="bg-light">
+    <div class="container text-center mt-5">
+        <img src="/static/images/logo_.png" alt="A Z Household Services Logo" class="img-fluid mb-4" style="max-width: 300px;">
+    </div>
     
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold text-primary">Welcome to A Z Household Services</h1>
+        <p class="lead mt-3" style="color: black;">Your trusted partner for professional, reliable, and efficient household services.</p>
+        <div class="mt-4">
+            <a href="/login" class="btn btn-lg btn-primary px-4">Login</a>
+        </div>
+    </div>
+    <footer class="bg-dark text-white text-center py-3">
+        <p class="mb-0">Empowering homes, one service at a time.</p>
+        <p class="mb-0">© 2024 A Z Household Services. All Rights Reserved.</p>
+    </footer>
 </body>
 </html>
