@@ -51,7 +51,7 @@
                         {% if request.status == "completed" %}
                             <button type="button" class="btn btn-success" disabled>Closed</button>
                         {%else%}
-                            <a href="/close_request/{{request.id}}" type="button" class="btn btn-warning">Close It?</a>
+                            <a href="/close_request/{{ name }}/{{ id }}/{{request.id}}" type="button" class="btn btn-warning">Close It?</a>
                         {% endif %}
                     {% endif %}
                 </td>

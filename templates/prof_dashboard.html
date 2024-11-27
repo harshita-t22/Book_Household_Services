@@ -22,7 +22,7 @@
             <tr>
                 <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ r.id }}</td>
                 <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ r.proff_id }}</td>
-                <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ r.request_date }}</td>
+                <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ r.request_date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
                 <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ r.customer.full_name }}</td>
                 <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ r.customer.phone_no }}</td>
                 <td style="border: 1px solid #333; padding: 8px; text-align: center;">{{ r.customer.pincode }}</td>

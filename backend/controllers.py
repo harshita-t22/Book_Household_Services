@@ -180,6 +180,7 @@ def add_service(name):
         sname=request.form.get("name")
         price=request.form.get("price")
         descp=request.form.get("description")
+        time_required=request.form.get("time_required")
         file = request.files.get('service_image')
         file_path = None  # Initialize file path
         if file and allowed_file_(file.filename):
@@ -188,26 +189,13 @@ def add_service(name):
             file.save(os.path.join(app.config['UPLOAD_FOLDER_'], filename))
 
 
-        new_service=Service(name=sname,price=price,descrip=descp,image_path=file_path)
+        new_service=Service(name=sname,price=price,descrip=descp,image_path=file_path,time_required=time_required)
         db.session.add(new_service)
         db.session.commit()
         return redirect(url_for("admin_dashboard",name=name))
 
 
     return render_template("add_service.html",name=name)
-
-@app.route("/servicesub/<s_id>/<name>",methods=["POST","GET"])
-def add_servicesub(s_id,name):
-    if request.method=="POST":
-        spname=request.form.get("name")
-        price=request.form.get("price")
-        descp=request.form.get("description")
-        new_ser=ServiceSub(name=spname,price=price,descrip=descp,service_id=s_id)
-        db.session.add(new_ser)
-        db.session.commit()
-        return redirect(url_for("admin_dashboard",name=name))
-    return render_template("add_service subtype.html",s_id=s_id,name=name)
-
 
 @app.route("/search/<name>", methods=["GET", "POST"])
 def search(name):
@@ -241,7 +229,7 @@ def search_cus(name,id):
 
 @app.route("/professional/search/<name>/<id>", methods=["GET", "POST"])
 def search_prof(name, id):
-    search_term = request.form.get('search_term')  # Fetch search term
+    search_term = request.form.get('search_term')
     results = []
     if request.method == "POST":
         results = ServiceRequest.query.filter(ServiceRequest.status.ilike(f"%{search_term}%"),ServiceRequest.proff_id == id).all()
@@ -255,10 +243,12 @@ def edit_service(id,name):
     if request.method=="POST":
         name=request.form.get("name")
         price=request.form.get("price")
+        time_required=request.form.get("time_required")
         descp=request.form.get("description")
         s.name=name
         s.price=price
         s.descrip=descp
+        s.time_required=time_required
         db.session.commit()
         return redirect(url_for("admin_dashboard",name=name))
     return render_template("edit_service.html",service=s,name=name)
@@ -360,31 +350,38 @@ def delete_prof(id,name):
     return redirect(url_for("admin_dashboard",name=name))
 
 
-@app.route("/close_request/<int:request_id>", methods=["GET", "POST"])
-def close_request(request_id):
+@app.route("/close_request/<name>/<id>/<int:request_id>", methods=["GET", "POST"])
+def close_request(request_id,name,id):
     r=ServiceRequest.query.filter_by(id=request_id).first()
     r.status = "completed"
     r.done_date = datetime.now()
     db.session.commit()
-    return render_template("feedback.html",request_id=r.id)
+    return render_template("feedback.html",request_id=r.id,name=name,id=id)
 
-@app.route("/feedback_form/<int:request_id>", methods=["GET", "POST"])
-def feedback_form(request_id):
-    r=ServiceRequest.query.filter_by(id=request_id).first()
+@app.route("/feedback_form/<name>/<id>/<int:request_id>", methods=["GET", "POST"])
+def feedback_form(request_id, name, id):
+    r = ServiceRequest.query.filter_by(id=request_id).first()
     if request.method == "POST":
-        request_rating = request.form['rating']
+        request_rating = int(request.form['rating'])
         feedback = request.form['feedback']
-        service_prof_rating = request.form['service_prof_rating']
         r.rating = request_rating
         r.feedback = feedback
         db.session.commit()
         service_prof = ServiceProf.query.get(r.proff_id)
-        ratings = [sr.rating for sr in ServiceRequest.query.filter_by(proff_id=r.proff_id).all()]
-        avg_rating = sum(ratings) / len(ratings)
-        service_prof.rating = avg_rating
+        existing_rating = service_prof.rating
+        past_ratings_count = ServiceRequest.query.filter_by(proff_id=r.proff_id).count()
+        if past_ratings_count > 0:
+            new_rating_weighted = request_rating * request_rating
+            total_weighted_rating = (existing_rating * past_ratings_count) + new_rating_weighted
+            total_count = past_ratings_count + request_rating
+            new_avg_rating = total_weighted_rating / total_count
+        else:
+            new_avg_rating = request_rating
+        service_prof.rating = new_avg_rating
         db.session.commit()
-        return render_template("login.html",msg="")
-    return render_template("feedback_form.html", request=r)
+        return redirect(url_for("customer_dashboard", name=name, id=id))
+    return render_template("feedback.html", request_id=r.id, name=name, id=id)
+
 
 @app.route("/admin_summary/<name>")
 def put_admin_summary(name):

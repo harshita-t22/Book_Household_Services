@@ -43,6 +43,7 @@ class Service(db.Model):
     name=db.Column(db.String,unique=True,nullable=False)
     price=db.Column(db.Integer,nullable=False)
     descrip=db.Column(db.String,nullable=False)
+    time_required=db.Column(db.Integer,nullable=False)
     image_path = db.Column(db.String(200), nullable=True) 
     service_r=db.relationship("ServiceRequest",cascade="all,delete",backref="service",lazy=True)
 
@@ -60,16 +61,6 @@ class ServiceRequest(db.Model):
     rating=db.Column(db.Integer,default=0)
     feedback=db.Column(db.String,nullable=True)
 
-#5 entity
-
-class ServiceSub(db.Model):
-    __tablename="servicesubtype"
-    id=db.Column(db.Integer,primary_key=True)
-    name=db.Column(db.String,nullable=False)
-    price=db.Column(db.Float,nullable=False)
-    rating=db.Column(db.Integer,default=0)
-    descrip=db.Column(db.String,nullable=False)
-    service_id=db.Column(db.Integer,db.ForeignKey("service.id"),nullable=False)
 
 
 
