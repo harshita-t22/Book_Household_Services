@@ -60,12 +60,13 @@ def signupc():
     
     return render_template("customer_signup.html",msg="")
 
-UPLOAD_FOLDER = 'uploads/resumes'  # Directory to store uploaded files
+#make directory
+UPLOAD_FOLDER = 'uploads/resumes' 
 ALLOWED_EXTENSIONS = {'pdf'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
-UPLOAD_FOLDER_ = 'static/service_images'  # Directory for service images
+UPLOAD_FOLDER_ = 'static/service_images'
 ALLOWED_EXTENSIONS_ = {'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER_'] = UPLOAD_FOLDER_
 
@@ -101,8 +102,6 @@ def signups():
             file.save(file_path)
         else:
             return render_template("ser_proff_signup.html", msg="Invalid file type. Only PDFs are allowed.")
-
-
         usr=ServiceProf.query.filter_by(email=uname).first()
         if usr:
             return render_template("ser_proff_signup.html",msg="Sorry,this mail is already registred!!!")
@@ -159,7 +158,7 @@ def reject_request(name, id, request_id):
 @app.route("/customer/book/<name>/<id>/<sname>")
 def book_proff(name,id,sname):
     prof=get_proff(sname)
-    user = UserInfo.query.filter_by(id=id).first()
+    #user = UserInfo.query.filter_by(id=id).first()
     return render_template("request_service.html",name=name,sname=sname,servicesubtype=prof,id=id)
 
 @app.route("/customer/book/<name>/<pid>")
@@ -187,14 +186,10 @@ def add_service(name):
             filename = secure_filename(file.filename)
             file_path = os.path.join('service_images', filename).replace("\\","/")
             file.save(os.path.join(app.config['UPLOAD_FOLDER_'], filename))
-
-
         new_service=Service(name=sname,price=price,descrip=descp,image_path=file_path,time_required=time_required)
         db.session.add(new_service)
         db.session.commit()
         return redirect(url_for("admin_dashboard",name=name))
-
-
     return render_template("add_service.html",name=name)
 
 @app.route("/search/<name>", methods=["GET", "POST"])
@@ -241,11 +236,11 @@ def search_prof(name, id):
 def edit_service(id,name):
     s=get_service(id)
     if request.method=="POST":
-        name=request.form.get("name")
+        sname=request.form.get("name")
         price=request.form.get("price")
         time_required=request.form.get("time_required")
         descp=request.form.get("description")
-        s.name=name
+        s.name=sname
         s.price=price
         s.descrip=descp
         s.time_required=time_required
@@ -310,11 +305,11 @@ def edit_prof_profile(name,id):
 def edit_p(id,name):
     p=get_p(id)
     if request.method=="POST":
-        name=request.form.get("name")
+        pname=request.form.get("name")
         email=request.form.get("email")
         phone_no=request.form.get("phone")
         exp=request.form.get("exp")
-        p.full_name=name
+        p.full_name=pname
         p.email=email
         p.phone_no=phone_no
         p.experience=exp
@@ -446,11 +441,6 @@ def get_service(id):
 def get_p(id):
     service=ServiceProf.query.filter_by(id=id).first()
     return service
-
-def get_servicesub(id):
-    service=ServiceSub.query.filter_by(service_id=id).first()
-    return service
-
 
 def get_proff(name):
     return ServiceProf.query.filter(ServiceProf.service_name.ilike(f"{name}"), ServiceProf.status == "available",ServiceProf.approv_status!="pending").all()

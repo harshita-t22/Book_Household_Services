@@ -8,7 +8,9 @@
             <div class="card-body">
                 <h5 class="card-title">{{ s.name }}</h5>
                 <p class="card-text">{{ s.descrip }}</p>
-                <a href="/customer/book/{{ name }}/{{ id }}/{{s.name}}" type="submit" class="btn btn-primary">Book</a>
+                <h7 class="card-title">Price: ₹{{ s.price }}</h7><br>
+                <h7 class="card-title">Time Required: {{ s.time_required }} hours</h7><br>
+                <div class="center"><a href="/customer/book/{{ name }}/{{ id }}/{{s.name}}" type="submit" class="btn btn-primary">Book</a></div>
             </div>
         </div>
         {% endfor %}
